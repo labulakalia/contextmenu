@@ -15,6 +15,8 @@ void showContextMenu(
       context: context,
       configuration: FadeScaleTransitionConfiguration(
         barrierColor: Colors.transparent,
+        transitionDuration: Duration(milliseconds: 0),
+        reverseTransitionDuration: Duration(milliseconds: 0),
       ),
       builder: (context) {
         return ContextMenu(

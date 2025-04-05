@@ -1,5 +1,4 @@
 import 'package:after_layout/after_layout.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 const double _kMinTileHeight = 24;
@@ -68,6 +67,7 @@ class _ContextMenuState extends State<ContextMenu> {
       paddingTop += paddingBottom;
       paddingBottom = 0;
     }
+
     return AnimatedPadding(
       padding: EdgeInsets.fromLTRB(
         paddingLeft,
@@ -75,13 +75,13 @@ class _ContextMenuState extends State<ContextMenu> {
         paddingRight,
         paddingBottom,
       ),
-      duration: _kShortDuration,
+      // curve: Curves.linearToEaseOut,
+      duration: Duration.zero,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(5),
           boxShadow: [
             BoxShadow(
-              // offset: Offset(1, 2),
               color:
                   Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
               blurRadius: 3,
@@ -90,11 +90,8 @@ class _ContextMenuState extends State<ContextMenu> {
         ),
         child: Card(
           margin: EdgeInsets.zero,
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.circular(5),
-          // ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(5),
             child: Material(
               child: ListView(
                 primary: false,

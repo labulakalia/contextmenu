@@ -11,25 +11,25 @@ const double _kMinTileHeight = 24;
 /// If you just want to use a normal [ContextMenu], please use [ContextMenuArea].
 
 class ContextMenu extends StatefulWidget {
+  const ContextMenu({
+    Key? key,
+    required this.position,
+    required this.builder,
+    this.verticalPadding = 8,
+    this.width = 320,
+  }) : super(key: key);
+
   /// The [Offset] from coordinate origin the [ContextMenu] will be displayed at.
   final Offset position;
 
   /// The items to be displayed. [ListTile] is very useful in most cases.
-  final List<Widget Function(BuildContext)> children;
+  final List<Widget> Function(BuildContext) builder;
 
   /// The padding value at the top an bottom between the edge of the [ContextMenu] and the first / last item
   final double verticalPadding;
 
   /// The width for the [ContextMenu]. 320 by default according to Material Design specs.
   final double width;
-
-  const ContextMenu({
-    Key? key,
-    required this.position,
-    required this.children,
-    this.verticalPadding = 8,
-    this.width = 320,
-  }) : super(key: key);
 
   @override
   _ContextMenuState createState() => _ContextMenuState();
@@ -46,7 +46,9 @@ class _ContextMenuState extends State<ContextMenu> {
       height += element;
     });
 
-    final heightsNotAvailable = widget.children.length - _heights.length;
+    final children = widget.builder(context);
+
+    final heightsNotAvailable = children.length - _heights.length;
     height += heightsNotAvailable * _kMinTileHeight;
 
     if (height > MediaQuery.of(context).size.height)
@@ -74,24 +76,34 @@ class _ContextMenuState extends State<ContextMenu> {
         paddingBottom,
       ),
       duration: _kShortDuration,
-      child: SizedBox.shrink(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              // offset: Offset(1, 2),
+              color:
+                  Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
+              blurRadius: 3,
+            ),
+          ],
+        ),
         child: Card(
           margin: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
-          ),
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.circular(5),
+          // ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(10),
             child: Material(
-              // color: Colors.transparent,
               child: ListView(
                 primary: false,
                 shrinkWrap: true,
                 padding: EdgeInsets.symmetric(vertical: widget.verticalPadding),
-                children: widget.children
+                children: children
                     .map(
                       (e) => _GrowingWidget(
-                        child: e(context),
+                        child: e,
                         onHeightChange: (height) {
                           setState(() {
                             _heights[ValueKey(e)] = height;

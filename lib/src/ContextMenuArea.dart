@@ -7,7 +7,7 @@ import 'ContextMenu.dart';
 void showContextMenu(
   Offset offset,
   BuildContext context,
-  List<Widget Function(BuildContext)> children,
+  List<Widget> Function(BuildContext) builder,
   verticalPadding,
   width,
 ) {
@@ -19,7 +19,7 @@ void showContextMenu(
       builder: (context) {
         return ContextMenu(
           position: offset,
-          children: children,
+          builder: builder,
           verticalPadding: verticalPadding,
           width: width,
         );
@@ -38,7 +38,7 @@ class ContextMenuArea extends StatelessWidget {
   /// A [List] of items to be displayed in an opened [ContextMenu]
   ///
   /// Usually, a [ListTile] might be the way to go.
-  final List<Widget Function(BuildContext)> items;
+  final List<Widget> Function(BuildContext) builder;
 
   /// The padding value at the top an bottom between the edge of the [ContextMenu] and the first / last item
   final double verticalPadding;
@@ -49,7 +49,7 @@ class ContextMenuArea extends StatelessWidget {
   const ContextMenuArea({
     Key? key,
     required this.child,
-    required this.items,
+    required this.builder,
     this.verticalPadding = 8,
     this.width = 320,
   }) : super(key: key);
@@ -60,14 +60,14 @@ class ContextMenuArea extends StatelessWidget {
       onSecondaryTapDown: (details) => showContextMenu(
         details.globalPosition,
         context,
-        items,
+        builder,
         verticalPadding,
         width,
       ),
       onLongPressStart: (details) => showContextMenu(
         details.globalPosition,
         context,
-        items,
+        builder,
         verticalPadding,
         width,
       ),

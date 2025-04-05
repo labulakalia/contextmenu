@@ -15,7 +15,7 @@ class ContextMenu extends StatefulWidget {
   final Offset position;
 
   /// The items to be displayed. [ListTile] is very useful in most cases.
-  final List<Widget> children;
+  final List<Widget Function(BuildContext)> children;
 
   /// The padding value at the top an bottom between the edge of the [ContextMenu] and the first / last item
   final double verticalPadding;
@@ -78,12 +78,12 @@ class _ContextMenuState extends State<ContextMenu> {
         child: Card(
           margin: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(5),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Material(
-              color: Colors.transparent,
+              // color: Colors.transparent,
               child: ListView(
                 primary: false,
                 shrinkWrap: true,
@@ -91,7 +91,7 @@ class _ContextMenuState extends State<ContextMenu> {
                 children: widget.children
                     .map(
                       (e) => _GrowingWidget(
-                        child: e,
+                        child: e(context),
                         onHeightChange: (height) {
                           setState(() {
                             _heights[ValueKey(e)] = height;

@@ -7,22 +7,23 @@ import 'ContextMenu.dart';
 void showContextMenu(
   Offset offset,
   BuildContext context,
-  List<Widget> children,
+  List<Widget Function(BuildContext)> children,
   verticalPadding,
   width,
 ) {
   showModal(
-    context: context,
-    configuration: FadeScaleTransitionConfiguration(
-      barrierColor: Colors.transparent,
-    ),
-    builder: (context) => ContextMenu(
-      position: offset,
-      children: children,
-      verticalPadding: verticalPadding,
-      width: width,
-    ),
-  );
+      context: context,
+      configuration: FadeScaleTransitionConfiguration(
+        barrierColor: Colors.transparent,
+      ),
+      builder: (context) {
+        return ContextMenu(
+          position: offset,
+          children: children,
+          verticalPadding: verticalPadding,
+          width: width,
+        );
+      });
 }
 
 /// The [ContextMenuArea] is the way to use a [ContextMenu]
@@ -37,7 +38,7 @@ class ContextMenuArea extends StatelessWidget {
   /// A [List] of items to be displayed in an opened [ContextMenu]
   ///
   /// Usually, a [ListTile] might be the way to go.
-  final List<Widget> items;
+  final List<Widget Function(BuildContext)> items;
 
   /// The padding value at the top an bottom between the edge of the [ContextMenu] and the first / last item
   final double verticalPadding;
